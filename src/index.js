@@ -15,7 +15,7 @@ const { MessagesModel } = require('./schemas/messages');
 const server = createServer(app);
 const { PORT = 3000, MONGO_URL } = process.env
 app.use(cors({
-    origin: ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-backend.vercel.app'],
+    origin: ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-eta.vercel.app'],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true
 }))
@@ -28,7 +28,7 @@ app.use('/room', roomsRoutes)
 
 const io = new Server(server, {
     cors: {
-        origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-backend.vercel.app'],// Replace with your frontend URLs
+        origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-eta.vercel.app/'],// Replace with your frontend URLs
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all necessary methods
         credentials: true // Allow cookies/credentials if needed
     },
