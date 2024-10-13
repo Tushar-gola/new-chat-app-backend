@@ -14,7 +14,11 @@ const { default: mongoose } = require('mongoose');
 const { MessagesModel } = require('./schemas/messages');
 const server = createServer(app);
 const { PORT = 3000, MONGO_URL } = process.env
-app.use(cors('*'))
+app.use(cors({
+    origin: ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-backend.vercel.app'],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true
+}))
 app.use(express.json())
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
@@ -23,7 +27,11 @@ app.use('/room', roomsRoutes)
 // Socket Io
 
 const io = new Server(server, {
-    cors: "*",
+    cors: {
+        origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-backend.vercel.app'],// Replace with your frontend URLs
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all necessary methods
+        credentials: true // Allow cookies/credentials if needed
+    },
     pingTimeout: 60000, // Increase this value as needed
     pingInterval: 25000
 })
