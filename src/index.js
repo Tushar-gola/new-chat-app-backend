@@ -13,7 +13,7 @@ const { ChatsModal } = require('./schemas/chats');
 const { default: mongoose } = require('mongoose');
 const { MessagesModel } = require('./schemas/messages');
 const server = createServer(app);
-const { PORT, MONGO_URL } = process.env
+const { PORT = 3000, MONGO_URL } = process.env
 app.use(cors('*'))
 app.use(express.json())
 app.use('/auth', authRoutes)
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
         }
         io.to(roomId).emit('room id', { roomId, chat_id: existingChat?._id });
     })
-    socket.on('send message', async (message) => {        
+    socket.on('send message', async (message) => {
         const roomId = message.room
         const chatId = message.chatId
         const messageData = await MessagesModel.create({
@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('find chats', async ({ chatId, room }) => {
-        let chats = []  
+        let chats = []
         if (chatId) {
             chats = await MessagesModel.find({
                 chatId: chatId
@@ -109,11 +109,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('user typing start', (data) => {
-        
+
         const userSockets = userSocketMap.get(data?.recieverId)
         console.log(userSockets);
         console.log(data);
-        
+
         userSockets?.forEach(element => {
             io.to(element).emit('user typing', { userId: data?.userId });
         });
@@ -151,10 +151,14 @@ io.on('connection', (socket) => {
         }
     });
 });
+console.log(process.env.NODE_ENV);
 
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    server.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+}
+
 
 startServer(MONGO_URL)
 module.exports = server;
