@@ -157,7 +157,4 @@ server.listen(PORT, () => {
 });
 
 startServer(MONGO_URL)
-module.exports = {
-    app,
-    server
-}
+module.exports = server;
