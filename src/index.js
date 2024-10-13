@@ -28,7 +28,7 @@ app.use('/room', roomsRoutes)
 
 const io = new Server(server, {
     cors: {
-        origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-eta.vercel.app/'],// Replace with your frontend URLs
+        origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-eta.vercel.app'],// Replace with your frontend URLs
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all necessary methods
         credentials: true // Allow cookies/credentials if needed
     },
@@ -159,8 +159,6 @@ io.on('connection', (socket) => {
         }
     });
 });
-console.log(process.env.NODE_ENV);
-
 if (process.env.NODE_ENV !== 'production') {
     server.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}.`);
