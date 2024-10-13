@@ -29,7 +29,7 @@ app.use('/room', roomsRoutes)
 const io = new Server(server, {
     cors: {
         origin:  ['http://localhost:5173','http://localhost:5174', 'https://new-chat-app-eta.vercel.app'],// Replace with your frontend URLs
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow all necessary methods
+        methods: ["GET", "POST"], // Allow all necessary methods
         credentials: true // Allow cookies/credentials if needed
     },
     pingTimeout: 60000, // Increase this value as needed
@@ -117,11 +117,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('user typing start', (data) => {
-
         const userSockets = userSocketMap.get(data?.recieverId)
-        console.log(userSockets);
-        console.log(data);
-
         userSockets?.forEach(element => {
             io.to(element).emit('user typing', { userId: data?.userId });
         });
